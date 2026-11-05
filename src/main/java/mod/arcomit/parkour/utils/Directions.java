@@ -31,8 +31,9 @@ public class Directions {
 		for (Direction dir : dirs) {
 			BlockPos neighborPos = blockPos.relative(dir);
 
-			double deltaX = pos.x - neighborPos.getCenter().x;
-			double deltaZ = pos.z - neighborPos.getCenter().z;
+			Vec3 neighborCenter = Vec3.atCenterOf(neighborPos);
+			double deltaX = pos.x - neighborCenter.x;
+			double deltaZ = pos.z - neighborCenter.z;
 			double distSq = deltaX * deltaX + deltaZ * deltaZ;
 
 			if (distSq < closestSq) {

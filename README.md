@@ -4,7 +4,7 @@
 
 [![Code License](https://img.shields.io/badge/Code_License-GPL_v3-blue.svg?style=for-the-badge)](LICENSE)
 [![Asset License](https://img.shields.io/badge/Media_License-CC_BY--NC--SA_4.0-blue.svg?style=for-the-badge)](LICENSE-ASSET.md)
-[![Minecraft](https://img.shields.io/badge/Minecraft-26.1.2-green?style=for-the-badge)](https://www.minecraft.net/)
+[![Minecraft](https://img.shields.io/badge/Minecraft-26.2-green?style=for-the-badge)](https://www.minecraft.net/)
 [![NeoForge](https://img.shields.io/badge/NeoForge-Compatible-orange?style=for-the-badge)](https://neoforged.net/)
 
 **简单跑酷（Parkour）**，一个更简单、更易上手的新兴跑酷模组。
@@ -77,7 +77,7 @@
 
 [![Code License](https://img.shields.io/badge/Code_License-GPL_v3-blue.svg?style=for-the-badge)](LICENSE)
 [![Asset License](https://img.shields.io/badge/Media_License-CC_BY--NC--SA_4.0-blue.svg?style=for-the-badge)](LICENSE-ASSET.md)
-[![Minecraft](https://img.shields.io/badge/Minecraft-26.1.2-green?style=for-the-badge)](https://www.minecraft.net/)
+[![Minecraft](https://img.shields.io/badge/Minecraft-26.2-green?style=for-the-badge)](https://www.minecraft.net/)
 [![NeoForge](https://img.shields.io/badge/NeoForge-Compatible-orange?style=for-the-badge)](https://neoforged.net/)
 
 **Parkour** is a simpler and more accessible emerging parkour mod.

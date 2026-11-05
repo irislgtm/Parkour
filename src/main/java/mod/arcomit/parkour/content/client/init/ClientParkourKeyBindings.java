@@ -46,5 +46,6 @@ public class ClientParkourKeyBindings {
 	public static void registerKeyMappings(RegisterKeyMappingsEvent event) {
 		event.registerCategory(CATEGORY);
 		event.register(SLIDE_KEY);
+		event.register(ENABLE_PARKOUR_KEY);
 	}
 }

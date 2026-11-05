@@ -1,7 +1,6 @@
 package mod.arcomit.parkour.core.sensor.client.debug.handler;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import mod.arcomit.parkour.ParkourMod;
 import mod.arcomit.parkour.core.sensor.client.debug.SensorDebugType;
 import mod.arcomit.parkour.core.sensor.impl.ArmhangEyeSensor;
@@ -9,8 +8,7 @@ import mod.arcomit.parkour.core.sensor.impl.ArmhangTopSensor;
 import mod.arcomit.parkour.core.sensor.impl.HeadFeetSensor;
 import mod.arcomit.parkour.core.sensor.impl.WallJumpSensor;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.ShapeRenderer;
+import net.minecraft.client.renderer.OrderedSubmitNodeCollector;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
@@ -21,12 +19,12 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import net.neoforged.neoforge.client.event.SubmitCustomGeometryEvent;
 
 import java.util.List;
 
 /**
- * 客户端调试渲染处理器，在世界的半透明实体渲染阶段之后将传感器碰撞盒绘制为彩色线框。
+ * 客户端调试渲染处理器，在自定义几何体提交阶段将传感器碰撞盒绘制为彩色线框。
  *
  * @author Mitok
  * @since 2026-06-08
@@ -40,8 +38,7 @@ public class DebugSensorRenderHandler {
 	public static SensorDebugType DEBUG_TYPE = SensorDebugType.NONE;
 
 	@SubscribeEvent
-	public static void onRenderLevelStage(
-			RenderLevelStageEvent.AfterTranslucentParticles event) {
+	public static void onSubmitCustomGeometry(SubmitCustomGeometryEvent event) {
 		if (DEBUG_TYPE == SensorDebugType.NONE)
 			return;
 
@@ -52,8 +49,6 @@ public class DebugSensorRenderHandler {
 
 		PoseStack poseStack = event.getPoseStack();
 		Vec3 camPos = event.getLevelRenderState().cameraRenderState.pos;
-		MultiBufferSource.BufferSource bufferSource = mc.renderBuffers().bufferSource();
-		VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderTypes.lines());
 
 		// 平滑插值消除高帧率下的画面抖动
 		float partialTick = Minecraft.getInstance().getDeltaTracker()
@@ -112,12 +107,11 @@ public class DebugSensorRenderHandler {
 				return;
 		}
 
+		OrderedSubmitNodeCollector collector = event.getSubmitNodeCollector();
 		for (Direction dir : directions) {
 			renderDirectionBoxes(player, dir, checker, provider, poseStack,
-					vertexConsumer, offsetX, offsetY, offsetZ);
+					collector, offsetX, offsetY, offsetZ);
 		}
-
-		bufferSource.endBatch(RenderTypes.lines());
 
 		poseStack.popPose();
 	}
@@ -125,29 +119,30 @@ public class DebugSensorRenderHandler {
 	/**
 	 * 对单个方向进行碰撞检测并渲染所有相关 AABB 线框。
 	 *
-	 * @param player         目标玩家，不能为 null
-	 * @param direction      要检测的方向，不能为 null
-	 * @param checker        碰撞检测方法引用
-	 * @param provider       碰撞盒获取方法引用
-	 * @param poseStack      渲染姿态栈
-	 * @param vertexConsumer 线条顶点消费者
-	 * @param offsetX        平滑渲染 X 偏移量
-	 * @param offsetY        平滑渲染 Y 偏移量
-	 * @param offsetZ        平滑渲染 Z 偏移量
+	 * @param player    目标玩家，不能为 null
+	 * @param direction 要检测的方向，不能为 null
+	 * @param checker   碰撞检测方法引用
+	 * @param provider  碰撞盒获取方法引用
+	 * @param poseStack 渲染姿态栈
+	 * @param collector 已排序的提交节点收集器
+	 * @param offsetX   平滑渲染 X 偏移量
+	 * @param offsetY   平滑渲染 Y 偏移量
+	 * @param offsetZ   平滑渲染 Z 偏移量
 	 */
 	private static void renderDirectionBoxes(Player player, Direction direction,
 			CollisionChecker checker, BoxProvider provider, PoseStack poseStack,
-			VertexConsumer vertexConsumer, double offsetX, double offsetY,
+			OrderedSubmitNodeCollector collector, double offsetX, double offsetY,
 			double offsetZ) {
 		boolean colliding = checker.test(player, direction);
 		int color = colliding ? 0xFFFF0000 : 0xFF00FF00;
 
 		for (AABB box : provider.get(player, direction)) {
 			AABB smoothBox = box.move(offsetX, offsetY, offsetZ);
-			ShapeRenderer.renderShape(poseStack, vertexConsumer,
+			collector.submitShapeOutline(poseStack,
 					Shapes.box(smoothBox.minX, smoothBox.minY, smoothBox.minZ,
 							smoothBox.maxX, smoothBox.maxY,
-							smoothBox.maxZ), 0, 0, 0, color, 1.0F);
+							smoothBox.maxZ),
+					RenderTypes.lines(), color, 1.0F, true);
 		}
 	}
 

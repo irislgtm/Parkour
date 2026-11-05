@@ -73,7 +73,7 @@ public class ClientWallJumpKeyInputHandler {
 	private static void handleKeyAction(int action, int inputKey) {
 		Minecraft mc = Minecraft.getInstance();
 		LocalPlayer player = mc.player;
-		if (player == null || mc.screen != null) {
+		if (player == null || mc.gui.screen() != null) {
 			return;
 		}
 		if (!isJumpPress(mc, action, inputKey)) {

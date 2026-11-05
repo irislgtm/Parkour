@@ -13,7 +13,7 @@ displayName = "${mod_name}"
 # 模组的“主页”网址，会显示在游戏内的模组界面中
 #displayURL="https://change.me.to.your.mods.homepage.example.invalid/" # 选填 (optional)
 
-logoFile = "parkour.png"
+iconFile = "parkour.png"
 credits = "【排名不分先后】瑞雪真冬、artemisSystem、alRex_U"
 authors = "${mod_authors}"
 description = '''
@@ -65,7 +65,7 @@ reason = '''
 Player Animation Library 是一个提供玩家动画支持的库模组，Parkour 的玩家动画功能依赖于它。
 Player Animation Library is a library mod that provides player animation support, and Parkour's player animation features depend on it.
 '''
-versionRange = "[1.2.3,)"
+versionRange = "[1.2.9,)"
 ordering = "AFTER"
 side = "CLIENT"
 

@@ -41,11 +41,13 @@ public class ParkourBlockTagsProvider extends BlockTagsProvider {
 	protected void addTags(HolderLookup.@NotNull Provider provider) {
 		BuiltInRegistries.BLOCK.stream().filter(block -> isCrossCollisionBlock(
 				block) || isNotFullRotatedPillarBlock(block) || isEndRodBlock(
-				block)).forEach(this.tag(ParkourTags.Blocks.CLIMBABLE)::add);
+				block)).forEach(block -> this.tag(ParkourTags.Blocks.CLIMBABLE)
+				.add(block.builtInRegistryHolder().key()));
 		this.tag(ParkourTags.Blocks.CLIMBABLE).addTag(BlockTags.FENCES);
 		this.tag(ParkourTags.Blocks.COMMON_IGNORED_BLOCKS)
 				.addTag(ParkourTags.Blocks.CLIMBABLE);
 		this.tag(ParkourTags.Blocks.COMMON_IGNORED_BLOCKS).addTag(BlockTags.CLIMBABLE);
-		this.tag(ParkourTags.Blocks.SCAFFOLDING_BLOCKS).add(Blocks.SCAFFOLDING);
+		this.tag(ParkourTags.Blocks.SCAFFOLDING_BLOCKS)
+				.add(Blocks.SCAFFOLDING.builtInRegistryHolder().key());
 	}
 }

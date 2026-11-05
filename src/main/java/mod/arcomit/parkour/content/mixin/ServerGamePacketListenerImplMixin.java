@@ -6,8 +6,6 @@ import mod.arcomit.parkour.ParkourConfig;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Constant;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
 /**
  * 移除速度限制反作弊的Mixin。
@@ -19,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 public class ServerGamePacketListenerImplMixin {
 
 	@WrapOperation(
-			method = { "handleMovePlayer", "handleMoveVehicle" },
+			method = { "handleMoveVehicle", "shouldCheckPlayerMovement" },
 			at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerGamePacketListenerImpl;isSingleplayerOwner()Z")
 	)
 	private boolean bypassAntiCheat(ServerGamePacketListenerImpl instance, Operation<Boolean> original) {

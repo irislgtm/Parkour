@@ -36,7 +36,7 @@ public class ClientSyncParkourEnabledHandler {
 			ClientPacketDistributor.sendToServer(new SyncParkourEnabledC2SPayload(newState));
 
 			String translationKey = newState ? "message.parkour.enabled" : "message.parkour.disabled";
-			Minecraft.getInstance().gui.setOverlayMessage(Component.translatable(translationKey), false);
+			Minecraft.getInstance().gui.hud.setOverlayMessage(Component.translatable(translationKey), false);
 		}
 	}
 

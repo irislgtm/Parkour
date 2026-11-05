@@ -77,8 +77,9 @@ public class WallRunCollision {
 	}
 
 	private static double horizontalDistanceSq(Vec3 playerVec, BlockPos blockPos) {
-		double dx = playerVec.x - blockPos.getCenter().x;
-		double dz = playerVec.z - blockPos.getCenter().z;
+		Vec3 center = Vec3.atCenterOf(blockPos);
+		double dx = playerVec.x - center.x;
+		double dz = playerVec.z - center.z;
 		return dx * dx + dz * dz;
 	}
 
